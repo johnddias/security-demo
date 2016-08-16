@@ -16,13 +16,19 @@ def runSshCmd(hostname, username, password, cmd, timeout=None):
 fo = open("server.lst", "r")
 hosts = fo.readlines()
 fo.close()
+fo = open("passwords.lst", "r")
+passwords = fo.readlines()
+fo.close()
 
 for h in hosts:
-    try:
-        runSshCmd(h.rstrip(), "root", "", "uname -a")
-    except paramiko.AuthenticationException, e:
-        print("Host %s result: %s" % (h.rstrip(), e))
-    except paramiko.SSHException, e:
-        print(e)
-    except socket.error, e:
-        print(e)
+    for p in passwords:
+        try:
+            runSshCmd(h.rstrip(), "root", p.rstrip(), "uname -a")
+        except paramiko.AuthenticationException, e:
+            print("Host %s result: %s" % (h.rstrip(), e))
+        except paramiko.SSHException, e:
+            print("Host %s result: %s" % (h.rstrip(), e))
+        except socket.error, e:
+            print("Host %s result: %s" % (h.rstrip(), e))
+        else:
+            print("Host %s connected with password %s" % (h.rstrip, p.rstrip))
