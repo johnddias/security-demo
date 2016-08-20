@@ -5,7 +5,7 @@ def runSshCmd(hostname, username, password, cmd, timeout=None):
     client = paramiko.SSHClient()
     client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
     client.connect(hostname, username=username, password=password,
-        allow_agent=False, look_for_keys=False, timeout=timeout)
+        allow_agent=False, look_for_keys=False, timeout=5)
 
     stdin, stdout, stderr = client.exec_command(cmd)
     data = stdout.read()
@@ -31,4 +31,4 @@ for h in hosts:
         except socket.error, e:
             print("Host %s result: %s" % (h.rstrip(), e))
         else:
-            print("Host %s connected with password %s" % (h.rstrip, p.rstrip))
+            print("Host %s connected with password %s" % (h.rstrip(), p.rstrip()))
